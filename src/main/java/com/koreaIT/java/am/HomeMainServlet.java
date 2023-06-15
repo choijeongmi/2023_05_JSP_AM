@@ -16,7 +16,7 @@ public class HomeMainServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 
-		response.getWriter().append("love woojin ");
+		request.getRequestDispatcher("/jsp/home/main.jsp").forward(request, response);
 	}
 
 }
