@@ -22,6 +22,7 @@
 	 <div>내용 : <%= (String) articleMap.get("body") %></div>
 	 <a href="list">목록</a>
 	 <a href="../home/main">메인</a>
+	 <a href="delete">삭제</a>
 
 
 </body>
