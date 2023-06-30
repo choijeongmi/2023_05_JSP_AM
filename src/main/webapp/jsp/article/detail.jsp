@@ -21,7 +21,7 @@
 	 <div>내용 : <%= (String) articleMap.get("body") %></div>
 	 <a href="list">목록</a>
 	 <a href="../home/main">메인</a>
-	 <a href="doDelete?id=<%=(int) articleMap.get("id")%>">삭제</a>
+	 <a href="doDelete?id=<%=(int) articleMap.get("id")%>" onclick="if(confirm('정말 삭제하시겠습니까?') == false) return false;">삭제</a>
 	 <a href="modify?id=<%=(int) articleMap.get("id")%>">수정</a>
 
 
