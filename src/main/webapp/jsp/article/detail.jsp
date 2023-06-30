@@ -1,9 +1,8 @@
 <%@page import="java.time.LocalDateTime"%>
 <%@page import="java.util.Map"%>
-
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
-
+    pageEncoding="UTF-8"%>
+    
 <%
 	Map<String, Object> articleMap = (Map<String, Object>) request.getAttribute("articleMap");
 %>
@@ -22,7 +21,7 @@
 	 <div>내용 : <%= (String) articleMap.get("body") %></div>
 	 <a href="list">목록</a>
 	 <a href="../home/main">메인</a>
-	 <a href="delete">삭제</a>
+	 <a href="doDelete">삭제</a>
 
 
 </body>

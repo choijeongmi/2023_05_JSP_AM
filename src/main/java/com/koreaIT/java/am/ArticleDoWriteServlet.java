@@ -14,8 +14,8 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
-@WebServlet("/article/doDelete")
-public class ArticleDeleteServlet extends HttpServlet {
+@WebServlet("/article/doWrite")
+public class ArticleDoWriteServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -23,24 +23,25 @@ public class ArticleDeleteServlet extends HttpServlet {
 		response.setContentType("text/html; charset=UTF-8");
 		
 		Connection conn = null;
-		
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
 			String url = "jdbc:mysql://127.0.0.1:3306/jsp_article_manager?useUnicode=true&characterEncoding=utf8&autoReconnect=true&serverTimezone=Asia/Seoul&useOldAliasMetadataBehavior=true&zeroDateTimeNehavior=convertToNull";
 			
 			conn = DriverManager.getConnection(url, "root", "");
 			
-			int id = Integer.parseInt(request.getParameter("id"));
+			String title = request.getParameter("title");
+			String body = request.getParameter("body");
 			
 			SecSql sql = new SecSql();
-			sql.append("DELETE FROM article");
-			sql.append("WHERE id = ?", id);
-	
+			sql.append("INSERT INTO article");
+			sql.append("SET regDate = NOW()");
+			sql.append(", updateDate = NOW()");
+			sql.append(", title = ?", title);
+			sql.append(", `body` = ?", body);
 			
-			 DBUtil.delete(conn, sql);
+			int id = DBUtil.insert(conn, sql);
 			
-			response.getWriter().append(String.format("<script>alert('%d번 게시글 삭제 성공');location.replace('list');</script>", id));
-
+			response.getWriter().append(String.format("<script>alert('%d번 게시글이 생성 되었습니다'); location.replace('list');</script>", id));
 			
 		} catch (ClassNotFoundException e) {
 			System.out.println("드라이버 로딩 실패");
@@ -57,4 +58,8 @@ public class ArticleDeleteServlet extends HttpServlet {
 		}
 	}
 
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		doGet(request, response);
+	}
+	
 }
