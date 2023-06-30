@@ -26,7 +26,7 @@ public class SecSql {
 	}
 
 	public SecSql append(Object... args) {
-
+		
 		if (args.length > 0) {
 			String sqlBit = (String) args[0];
 			sqlBuilder.append(sqlBit + " ");
