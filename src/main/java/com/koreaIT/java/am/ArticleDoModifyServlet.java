@@ -5,6 +5,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
+import com.koreaIT.java.am.config.Config;
 import com.koreaIT.java.am.util.DBUtil;
 import com.koreaIT.java.am.util.SecSql;
 
@@ -25,10 +26,10 @@ public class ArticleDoModifyServlet extends HttpServlet {
 
 		Connection conn = null;
 		try {
-			Class.forName("com.mysql.jdbc.Driver");
-			String url = "jdbc:mysql://127.0.0.1:3306/jsp_article_manager?useUnicode=true&characterEncoding=utf8&autoReconnect=true&serverTimezone=Asia/Seoul&useOldAliasMetadataBehavior=true&zeroDateTimeNehavior=convertToNull";
-
-			conn = DriverManager.getConnection(url, "root", "");
+			Class.forName(Config.getDBDriverName());
+			String url = Config.getDBUrl();
+			
+			conn = DriverManager.getConnection(url, Config.getDBUser(), Config.getDBPasswd());
 
 			String title = request.getParameter("title");
 			String body = request.getParameter("body");
@@ -38,7 +39,7 @@ public class ArticleDoModifyServlet extends HttpServlet {
 			sql.append("UPDATE article");
 			sql.append("SET updateDate = NOW()");
 			sql.append(", title = ?", title);
-			sql.append(", `body` = ?", body);
+			sql.append(", `body` = ?", body); 
 			sql.append(" WHERE id = ?", id);
 
 			DBUtil.update(conn, sql);
