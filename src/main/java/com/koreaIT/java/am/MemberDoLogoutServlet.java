@@ -9,25 +9,26 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 
-
-@WebServlet("/home/main")
-public class HomeMainServlet extends HttpServlet {
+@WebServlet("/member/doLogout")
+public class MemberDoLogoutServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
+
+		response.setContentType("text/html; charset=UTF-8");
+
+		response.getWriter()
+				.append(String.format("<script>alert('로그아웃 되었습니다.'); location.replace('../home/main');</script>"));
 		
 		HttpSession session = request.getSession();
-		int loginedMemberId = -1;
-		
-		if(session.getAttribute("loginedMemberId") != null) {
-			loginedMemberId = (int) session.getAttribute("loginedMemberId");
-			
-		}
-		
-		request.setAttribute("loginedMemberId", loginedMemberId);
+		session.removeAttribute("loginedMemberId"); // session에 있는 정보를 지우는 과정
 
-		request.getRequestDispatcher("/jsp/home/main.jsp").forward(request, response);
+	}
+
+	protected void doPost(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+		doGet(request, response);
 	}
 
 }
