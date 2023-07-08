@@ -10,37 +10,57 @@ CREATE TABLE article(
     `body` TEXT NOT NULL
 );
 
+ALTER TABLE article ADD COLUMN memberId INT UNSIGNED NOT NULL AFTER updateDate;
+
+CREATE TABLE `member`(
+    id INT UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    regDate DATETIME NOT NULL,
+    updateDate DATETIME NOT NULL,
+    loginId VARCHAR(50) NOT NULL UNIQUE,
+    loginPw VARCHAR(50) NOT NULL, 
+    `name` VARCHAR(50) NOT NULL
+);
+
 INSERT INTO article
 SET regDate = NOW(),
 updateDate = NOW(),
+memberId = 1,
 title = '제목1',
 `body` = '내용1';
 
 INSERT INTO article
 SET regDate = NOW(),
 updateDate = NOW(),
+memberId = 2,
 title = '제목2',
 `body` = '내용2';
 
 INSERT INTO article
 SET regDate = NOW(),
 updateDate = NOW(),
+memberId = 1,
 title = '제목3',
 `body` = '내용3';
 
-INSERT INTO article
+INSERT INTO `member`
 SET regDate = NOW(),
 updateDate = NOW(),
-title = '체체',
-`body` = '체체';
+loginId = 'test1',
+loginPw = 'test1',
+`name` = '유저1';
+
+INSERT INTO `member`
+SET regDate = NOW(),
+updateDate = NOW(),
+loginId = 'test2',
+loginPw = 'test2',
+`name` = '유저2';
 
 INSERT INTO article(regDate, updateDate, title, `body`)
-SELECT NOW(), NOW(), CONCAT('제목_', FLOOR(RAND() * 4) + 1), CONCAT('내용_', FLOOR(RAND() * 4) + 1) FROM article
-
-
-
-
-SELECT COUNT( * ) FROM article;
-SELECT * FROM article;
+SELECT NOW(), NOW(), CONCAT('제목_', FLOOR(RAND() * 4) + 1), CONCAT('내용_', FLOOR(RAND() * 4) + 1) FROM article;
 
 TRUNCATE article;
+TRUNCATE `member`;
+
+SELECT * FROM article;
+SELECT * FROM `member`;
