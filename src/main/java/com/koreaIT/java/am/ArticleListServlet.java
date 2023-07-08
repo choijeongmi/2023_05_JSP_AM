@@ -16,6 +16,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 
 @WebServlet("/article/list")
 public class ArticleListServlet extends HttpServlet {
@@ -28,6 +29,7 @@ public class ArticleListServlet extends HttpServlet {
 			String url = Config.getDBUrl();
 			
 			conn = DriverManager.getConnection(url, Config.getDBUser(), Config.getDBPasswd());
+			
 			
 			int page = 1;
 			
@@ -44,7 +46,6 @@ public class ArticleListServlet extends HttpServlet {
 			
 			int totalCount = DBUtil.selectRowIntValue(conn, sql);
 			int totalPage = (int) Math.ceil((double) totalCount / itemsInAPage);
-			
 			int pageSize = 5;
 			
 			int from = page - pageSize;
@@ -57,6 +58,15 @@ public class ArticleListServlet extends HttpServlet {
 				end = totalPage;
 			}
 			
+			HttpSession session = request.getSession();
+			int loginedMemberId = -1;
+			
+			if(session.getAttribute("loginedMemberId") != null) {
+				loginedMemberId = (int) session.getAttribute("loginedMemberId");
+				
+			}
+			
+					
 			sql = new SecSql();
 			sql.append("SELECT *");
 			sql.append("FROM article");
@@ -70,6 +80,8 @@ public class ArticleListServlet extends HttpServlet {
 			request.setAttribute("from", from);
 			request.setAttribute("end", end);
 			request.setAttribute("articleListMap", articleListMap);
+			request.setAttribute("loginedMemberId", loginedMemberId);
+		
 			
 			request.getRequestDispatcher("/jsp/article/list.jsp").forward(request, response);
 			
