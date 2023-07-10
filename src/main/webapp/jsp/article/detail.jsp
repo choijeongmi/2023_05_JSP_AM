@@ -5,7 +5,6 @@
     
 <%
 	Map<String, Object> articleMap = (Map<String, Object>) request.getAttribute("articleMap");
-	int loginedMemberId = (int) request.getAttribute("loginedMemberId");
 %>
 
 <!DOCTYPE html>
@@ -15,7 +14,7 @@
 <title>게시물 상세보기</title>
 </head>
 <body>
-
+	<%@ include file="../common/topBar.jsp" %>
 
 	 <h1><%= (int) articleMap.get("id") %>번 게시물</h1>	
 	 <div>글번호 : <%= (int) articleMap.get("id") %></div>
@@ -31,7 +30,7 @@
 	%> 		
 	 <a href="doDelete?id=<%=(int) articleMap.get("id")%>" onclick="if(confirm('정말 삭제하시겠습니까?') == false) return false;">삭제</a>
 	 <a href="modify?id=<%=(int) articleMap.get("id")%>">수정</a>
-			return;
+			
 	<%
 	}
 	%> 

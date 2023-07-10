@@ -25,5 +25,6 @@ public class ArticleWriteServlet extends HttpServlet {
 		
 		
 		request.getRequestDispatcher("/jsp/article/write.jsp").forward(request, response);
+		
 	}
 }
