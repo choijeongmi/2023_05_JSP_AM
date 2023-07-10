@@ -35,7 +35,7 @@ public class ArticleDoWriteServlet extends HttpServlet {
 			String body = request.getParameter("body");
 			
 			HttpSession session = request.getSession();
-			int loginedMemberId =  (int) session.getAttribute("loginedMemberId");
+			int loginedMemberId = (int) session.getAttribute("loginedMemberId");
 			
 			SecSql sql = new SecSql();
 			sql.append("INSERT INTO article");

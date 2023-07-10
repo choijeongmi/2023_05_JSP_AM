@@ -1,5 +1,12 @@
 package com.koreaIT.java.am;
 
+import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.WebServlet;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
+
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -10,18 +17,12 @@ import com.koreaIT.java.am.config.Config;
 import com.koreaIT.java.am.util.DBUtil;
 import com.koreaIT.java.am.util.SecSql;
 
-import jakarta.servlet.ServletException;
-import jakarta.servlet.annotation.WebServlet;
-import jakarta.servlet.http.HttpServlet;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
-
 @WebServlet("/article/modify")
 public class ArticleModifyServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-
+       
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		
 		Connection conn = null;
 		try {
 			Class.forName(Config.getDBDriverName());
@@ -41,21 +42,23 @@ public class ArticleModifyServlet extends HttpServlet {
 			request.setAttribute("articleMap", articleMap);
 			
 			HttpSession session = request.getSession();
+			
 			int loginedMemberId = -1;
 			
-			if(session.getAttribute("loginedMemberId") != null) {
+			if (session.getAttribute("loginedMemberId") != null) {
 				loginedMemberId = (int) session.getAttribute("loginedMemberId");
-				
 			}
 			
-			if(session.getAttribute("loginedMemebrId") == null) {
-				response.setContentType("text/html; charset+UTF-8");
-				response.getWriter().append(String.format("<script>alert('로그인 후 이용해주세요.'); location.replace('../member/login)</script>")); 	
+			if (loginedMemberId == -1) {
+				response.setContentType("text/html; charset=UTF-8");
+				response.getWriter().append(String.format("<script>alert('로그인 후 이용해주세요'); location.replace('../member/login');</script>"));
 				return;
 			}
-			if ((int)articleMap.get("memberId") != loginedMemberId ) {
-				response.setContentType("text/html; charset+UTF-8");				
-				response.getWriter().append(String.format("<script>alert('수정 권한이 없습니다.'); location.replace('detail?id=%d')</script>",id)); 	
+			
+			if ((int) articleMap.get("memberId") != loginedMemberId) {
+				response.setContentType("text/html; charset=UTF-8");
+				response.getWriter().append(String.format("<script>alert('해당 게시물에 대한 권한이 없습니다'); location.replace('detail?id=%d');</script>", id));
+				return;
 			}
 			
 			request.getRequestDispatcher("/jsp/article/modify.jsp").forward(request, response);
@@ -74,5 +77,4 @@ public class ArticleModifyServlet extends HttpServlet {
 			}
 		}
 	}
-
 }

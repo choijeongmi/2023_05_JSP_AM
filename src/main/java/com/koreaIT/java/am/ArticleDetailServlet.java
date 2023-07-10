@@ -29,32 +29,26 @@ public class ArticleDetailServlet extends HttpServlet {
 			
 			conn = DriverManager.getConnection(url, Config.getDBUser(), Config.getDBPasswd());
 			
-			
-			
 			int id = Integer.parseInt(request.getParameter("id"));
 			
 			SecSql sql = new SecSql();
-			sql.append("SELECT A.*, M.name AS writerName");
-			sql.append("FROM article AS A");
-			sql.append("INNER JOIN `member` AS M");
-			sql.append("ON A.memberId = M.id");
-			sql.append("WHERE A.id = ?", id);
-			
-			
+			sql.append("SELECT a.*, m.name AS writerName");
+			sql.append("FROM article AS a");
+			sql.append("INNER JOIN `member` AS m");
+			sql.append("ON a.memberId = m.id");
+			sql.append("WHERE a.id = ?", id);
 			
 			Map<String, Object> articleMap = DBUtil.selectRow(conn, sql);
+			
 			request.setAttribute("articleMap", articleMap);
 			
-	
-			
 			HttpSession session = request.getSession();
+			
 			int loginedMemberId = -1;
 			
-			if(session.getAttribute("loginedMemberId") != null) {
+			if (session.getAttribute("loginedMemberId") != null) {
 				loginedMemberId = (int) session.getAttribute("loginedMemberId");
-				
 			}
-			
 			
 			request.setAttribute("loginedMemberId", loginedMemberId);
 			

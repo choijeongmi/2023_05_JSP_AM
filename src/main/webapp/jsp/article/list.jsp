@@ -19,13 +19,18 @@
 </head>
 <body>
 	<h1>게시물 리스트</h1>
+	
 	<div><a href="../home/main">메인</a></div>
 	<%@ include file="../common/topBar.jsp" %>
 	
-	<% if(loginedMemberId != -1){
-		%>
-	<div><a href="write">글쓰기</a></div>
-<% } %>	
+	<%
+		if (loginedMemberId != -1) {
+	%>
+		<div><a href="write">글쓰기</a></div>
+	<% 	
+		}
+	%>
+	
 	
 	<table border="1">
 		<colgroup>
@@ -61,16 +66,15 @@
 	</style>
 	
 	<div class="paging">
-		<% if(currentPage > 1){%>
-			<a href="list?page=1">◀</a>	
-		<%} %>
+		<% if (currentPage > 1) { %>
+			<a href="list?page=1">◀</a>
+		<% } %>
 		<% for(int i = from; i <= end; i++) { %>
 			<a class="<%= currentPage == i ? "red" : "" %>" href="list?page=<%= i %>"><%= i %></a>
 		<% } %>
-		<% if(currentPage < totalPage){%>
-			<a href="list?page=<%= totalPage %>">▶</a>	
-		<%} %>
-		
+		<% if (currentPage < totalPage) { %>
+			<a href="list?page=<%= totalPage %>">▶</a>
+		<% } %>
 	</div>
 </body>
 </html>

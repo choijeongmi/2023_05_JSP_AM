@@ -19,34 +19,32 @@ import jakarta.servlet.http.HttpServletResponse;
 public class ArticleDoModifyServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
-	protected void doGet(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
-
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		
 		response.setContentType("text/html; charset=UTF-8");
-
+		
 		Connection conn = null;
 		try {
 			Class.forName(Config.getDBDriverName());
 			String url = Config.getDBUrl();
 			
 			conn = DriverManager.getConnection(url, Config.getDBUser(), Config.getDBPasswd());
-
+			
+			int id = Integer.parseInt(request.getParameter("id"));
 			String title = request.getParameter("title");
 			String body = request.getParameter("body");
-			int id = Integer.parseInt(request.getParameter("id"));
-
+			
 			SecSql sql = new SecSql();
 			sql.append("UPDATE article");
 			sql.append("SET updateDate = NOW()");
 			sql.append(", title = ?", title);
-			sql.append(", `body` = ?", body); 
-			sql.append(" WHERE id = ?", id);
-
+			sql.append(", `body` = ?", body);
+			sql.append("WHERE id = ?", id);
+			
 			DBUtil.update(conn, sql);
-
-			response.getWriter().append(
-					String.format("<script>alert('%d번 게시글이 수정 되었습니다'); location.replace('detail?id=%d');</script>", id, id));
-
+			
+			response.getWriter().append(String.format("<script>alert('%d번 게시글 수정 성공'); location.replace('detail?id=%d');</script>", id, id));
+			
 		} catch (ClassNotFoundException e) {
 			System.out.println("드라이버 로딩 실패");
 		} catch (SQLException e) {
@@ -61,10 +59,8 @@ public class ArticleDoModifyServlet extends HttpServlet {
 			}
 		}
 	}
-
-	protected void doPost(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
+	
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		doGet(request, response);
 	}
-
 }
